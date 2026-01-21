@@ -3,6 +3,7 @@
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\StockController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -24,6 +25,8 @@ Route::middleware(['auth'])->group(function() {
     Route::get('permissions/toggle', [PermissionController::class, 'toggle'])->name('permissions.toggle');
     
     Route::resource('products', ProductController::class);
+    Route::post('stocks/confirm/{id}', [StockController::class, 'confirmed'])->name('stocks.confirmed');
+    Route::resource('stocks', StockController::class);
 });
 
 

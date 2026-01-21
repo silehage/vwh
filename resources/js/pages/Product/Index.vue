@@ -40,6 +40,7 @@ const filterFn = (val, update, abort) => {
                      <th align="left">#</th>
                      <th align="left">Sku Number</th>
                      <th align="left">Product</th>
+                     <th align="left">Total Stock</th>
                   </tr>
                </thead>
                <tbody>
@@ -47,6 +48,7 @@ const filterFn = (val, update, abort) => {
                      <td>{{ data.from + i }}</td>
                      <td>{{ item.sku_number }}</td>
                      <td>{{ item.title }}</td>
+                     <td>{{ item.total_stock }}</td>
                   </tr>
                </tbody>
             </table>

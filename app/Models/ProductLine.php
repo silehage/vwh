@@ -12,5 +12,6 @@ class ProductLine extends Model
         'product_id',
         'buy_price',
         'sell_price',
+        'total_Stock',
     ];
 }

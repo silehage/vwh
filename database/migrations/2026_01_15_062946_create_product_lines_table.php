@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignId('product_id')->constrained('products')->cascadeOnDelete();
             $table->integer('buy_price')->default(0);
             $table->integer('sell_price')->default(0);
+            $table->integer('total_stock')->default(0);
             $table->timestamps();
         });
     }

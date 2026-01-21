@@ -18,6 +18,12 @@ class ProductService
          $q->where('product_id', $requst->product_id);
       })->paginate($requst->per_page ?? 20);
    }
+   public function list($requst)
+   {
+      return ProductLine::when($requst->product_id, function($q) use ($requst) {
+         $q->where('product_id', $requst->product_id);
+      })->limit(500)->get();
+   }
    public function productFilters()
    {
       return Cache::remember('product_options', now()->addMinutes(10), function() {

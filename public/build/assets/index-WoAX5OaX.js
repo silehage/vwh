@@ -1,1 +1,0 @@
-import{q as s}from"./app-Dm8FEYe1.js";const o=t=>({url:o.url(t),method:"post"});o.definition={methods:["post"],url:"/auth/confirm-password"};o.url=t=>o.definition.url+s(t);o.post=t=>({url:o.url(t),method:"post"});const r=t=>({action:o.url(t),method:"post"});r.post=t=>({action:o.url(t),method:"post"});o.form=r;const m={store:Object.assign(o,o)};export{m as c,o as s};

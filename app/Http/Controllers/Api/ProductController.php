@@ -7,7 +7,6 @@ use App\Services\ProductService;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProductRequest;
 use App\Jobs\ProductStoreJob;
-use Illuminate\Support\Facades\Log;
 
 class ProductController extends Controller
 {
@@ -29,5 +28,15 @@ class ProductController extends Controller
                 'message' => $th->getMessage()
             ]);
         }
+    }
+
+    public function list(Request $request)
+    {
+        $data = $this->productService->list($request);
+        return response()->json([
+            'success' => true,
+            'message' => 'Succes',
+            'data' => $data
+        ]);
     }
 }
