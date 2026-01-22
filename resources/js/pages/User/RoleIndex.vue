@@ -48,8 +48,7 @@ const handleEdit = (item) => {
 
       <q-card class="section q-mt-md" flat>
          <q-card-section>
-            <div class="table-responsive">
-               <table class="table bordered">
+              <TableContainer>
                   <thead>
                      <tr>
                         <th align="left">#</th>
@@ -71,8 +70,7 @@ const handleEdit = (item) => {
                         </td>
                      </tr>
                   </tbody>
-               </table>
-            </div>
+              </TableContainer>
          </q-card-section>
       </q-card>
       <q-dialog v-model="modal">

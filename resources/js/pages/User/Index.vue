@@ -33,7 +33,7 @@ const handleFinish = () => {
 }
 
 const formAction = computed(() => {
-   if(selectedEdit.value) {
+   if (selectedEdit.value) {
       return update.form(selectedEdit.value.id)
    }
    return store.form()
@@ -54,37 +54,30 @@ const formAction = computed(() => {
 
          <div>
             <!-- <AppPagination v-bind="data"></AppPagination> -->
-            <div class="table-responsive">
-
-               <table class="table bordered">
-                  <thead>
-                     <tr>
-                        <th class="text-left uppercase">#</th>
-                        <th class="text-left uppercase">Nama</th>
-                        <th class="text-left uppercase">Email</th>
-                        <th class="text-left uppercase">Role</th>
-                        <th class="text-left uppercase" v-if="can('Update')">Aksi</th>
-                     </tr>
-                  </thead>
-                  <tbody>
-                     <tr v-for="(item, idx) in data.data" :key="idx">
-                        <td>{{ data.from + idx }}</td>
-                        <td>{{ item.name }}</td>
-                        <td>{{ item.email }}</td>
-                        <td>{{ item.role ? item.role.name : '-' }}</td>
-                        <td class="q-gutter-xs no-wrap">
-                           <q-btn v-if="can('Update')" class="btn-action" no-caps color="blue"
-                              @click="handleEdit(item)">Edit</q-btn color="blue">
-                        </td>
-                     </tr>
-                     <tr v-if="!data.total">
-                        <td colspan="20" class="text-center">Tidak ada data</td>
-                     </tr>
-                  </tbody>
-               </table>
-
-
-            </div>
+            <TableContainer>
+               <thead>
+                  <tr>
+                     <th class="text-left uppercase">#</th>
+                     <th class="text-left uppercase">Nama</th>
+                     <th class="text-left uppercase">Email</th>
+                     <th class="text-left uppercase">Role</th>
+                     <th class="text-left uppercase" v-if="can('Update')">Aksi</th>
+                  </tr>
+               </thead>
+               <tbody>
+                  <tr v-for="(item, idx) in data.data" :key="idx">
+                     <td>{{ data.from + idx }}</td>
+                     <td>{{ item.name }}</td>
+                     <td>{{ item.email }}</td>
+                     <td>{{ item.role ? item.role.name : '-' }}</td>
+                     <td class="q-gutter-xs no-wrap">
+                        <q-btn v-if="can('Update')" class="btn-action" no-caps color="blue"
+                           @click="handleEdit(item)">Edit</q-btn color="blue">
+                     </td>
+                  </tr>
+               </tbody>
+            </TableContainer>
+            <div v-if="!data.total" class="q-pa-sm">No items found</div>
 
             <AppPagination v-bind="data"></AppPagination>
 
@@ -121,8 +114,7 @@ const formAction = computed(() => {
                         @click="isUpdatePassword = !isUpdatePassword" v-if="!isUpdatePassword"></q-btn>
                   </div>
                   <template v-if="isUpdatePassword">
-                     <Input label="Password" id="password" name="password" 
-                        autocomplete="new-password"></Input>
+                     <Input label="Password" id="password" name="password" autocomplete="new-password"></Input>
                      <div>
                         <Input label="Ulangi Password" id="password_confirmation" name="password_confirmation"
                            type="password_confirmation" autocomplete=""></Input>

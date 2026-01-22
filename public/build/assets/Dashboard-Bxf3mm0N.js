@@ -1,1 +1,0 @@
-import{c as n,o as a}from"./app-gCScvdaI.js";const s=(o,t)=>{const c=o.__vccOpts||o;for(const[e,r]of t)c[e]=r;return c},_={};function f(o,t){return a(),n("div",null,"Dashboard")}const d=s(_,[["render",f]]);export{d as default};

@@ -9,6 +9,7 @@ import AuthLayout from './layouts/AuthLayout.vue';
 import AppLayout from './layouts/AppLayout.vue';
 import AppHeader from './components/Header.vue';
 import AppPagination from './components/Pagination.vue';
+import TableContainer from '@/components/TableContainer.vue';
 
 // Import icon libraries
 import '@quasar/extras/material-icons/material-icons.css'
@@ -42,6 +43,7 @@ createInertiaApp({
             })
             .component('AppHeader', AppHeader)
             .component('AppPagination', AppPagination)
+            .component('TableContainer', TableContainer)
             .mount(el);
     },
     progress: {

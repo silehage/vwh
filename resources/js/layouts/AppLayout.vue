@@ -90,6 +90,7 @@ import permissions from '@/routes/permissions';
 import roles from '@/routes/roles';
 import products from '@/routes/products';
 import stocks from '@/routes/stocks';
+import orders from '@/routes/orders';
 
 const $q = useQuasar()
 
@@ -140,6 +141,14 @@ const navigations = [
   {
     title: 'Stocks',
     href: stocks.index(),
+    icon: 'groups',
+    ability: 'All',
+    visible: true,
+    items: []
+  },
+  {
+    title: 'Orders',
+    href: orders.index(),
     icon: 'groups',
     ability: 'All',
     visible: true,

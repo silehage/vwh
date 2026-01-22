@@ -16,7 +16,7 @@ const filterFn = (val, update, abort) => {
    update(() => {
       if (val) {
          console.log(val);
-         
+
          const needle = val.toLowerCase()
          option_filtered.value = options.filter(v => v.label.toLowerCase().indexOf(needle) > -1)
       } else {
@@ -30,29 +30,29 @@ const filterFn = (val, update, abort) => {
    <q-card class="section">
       <q-card-section>
          <q-select dense label="Filter Product" filled class="q-mb-md" :options="option_filtered" map-options emit-value
-         v-model="filter.product_id" @update:model-value="router.visit(products.index({ query: filter }))" use-input
-         hide-dropdown-icon clearable @clear="router.visit(products.index())" @filter="filterFn"></q-select>
+            v-model="filter.product_id" @update:model-value="router.visit(products.index({ query: filter }))" use-input
+            hide-dropdown-icon clearable @clear="router.visit(products.index())" @filter="filterFn"></q-select>
 
-         <div class="table-responsive">
-            <table class="table bordered">
-               <thead>
-                  <tr>
-                     <th align="left">#</th>
-                     <th align="left">Sku Number</th>
-                     <th align="left">Product</th>
-                     <th align="left">Total Stock</th>
-                  </tr>
-               </thead>
-               <tbody>
-                  <tr v-for="(item, i) in data.data" :key="i">
-                     <td>{{ data.from + i }}</td>
-                     <td>{{ item.sku_number }}</td>
-                     <td>{{ item.title }}</td>
-                     <td>{{ item.total_stock }}</td>
-                  </tr>
-               </tbody>
-            </table>
-         </div>
+         <TableContainer>
+
+
+            <thead>
+               <tr>
+                  <th align="left">#</th>
+                  <th align="left">Sku Number</th>
+                  <th align="left">Product</th>
+                  <th align="left">Total Stock</th>
+               </tr>
+            </thead>
+            <tbody>
+               <tr v-for="(item, i) in data.data" :key="i">
+                  <td>{{ data.from + i }}</td>
+                  <td>{{ item.sku_number }}</td>
+                  <td>{{ item.title }}</td>
+                  <td>{{ item.total_stock }}</td>
+               </tr>
+            </tbody>
+         </TableContainer>
          <div class="q-mt-md">
             <AppPagination v-bind="data"></AppPagination>
          </div>

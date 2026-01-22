@@ -29,7 +29,7 @@ const roleOptions = ref(props.roles)
 
 const filtered_data = computed(() => {
 
-   if(filter.value) {
+   if (filter.value) {
       return props.permissions.filter(el => el.tag == filter.value)
    }
 
@@ -50,31 +50,29 @@ const filtered_data = computed(() => {
                <q-btn v-for="module in modules" :key="module" unelevated size="13px"
                   :color="filter == module ? 'blue' : 'grey-6'" @click="filter = module">{{ module }}</q-btn>
             </div>
-            <div class="table-responsive">
-               <table class="table bordered">
-                  <thead>
-                     <tr>
-                        <th align="left">#</th>
-                        <th align="left">Permissions</th>
-                        <th align="left" v-for="item in roles" :key="item.id">{{ item.name }}</th>
-                     </tr>
-                  </thead>
-                  <tbody>
-                     <tr v-for="(item, index) in filtered_data" :key="index">
-                        <td>{{ index + 1 }}</td>
-                        <td>
-                           <div class="nowrap">
-                              {{ item.name }}
-                           </div>
-                        </td>
-                        <td v-for="(role, roleIndex) in roleOptions" :key="roleIndex">
-                           <q-toggle v-model="roleOptions[roleIndex].permissions"
-                              :val="item.id" @update:model-value="() => handleToggle(item.id, role.id)"></q-toggle>
-                        </td>
-                     </tr>
-                  </tbody>
-               </table>
-            </div>
+            <TableContainer>
+               <thead>
+                  <tr>
+                     <th align="left">#</th>
+                     <th align="left">Permissions</th>
+                     <th align="left" v-for="item in roles" :key="item.id">{{ item.name }}</th>
+                  </tr>
+               </thead>
+               <tbody>
+                  <tr v-for="(item, index) in filtered_data" :key="index">
+                     <td>{{ index + 1 }}</td>
+                     <td>
+                        <div class="nowrap">
+                           {{ item.name }}
+                        </div>
+                     </td>
+                     <td v-for="(role, roleIndex) in roleOptions" :key="roleIndex">
+                        <q-toggle v-model="roleOptions[roleIndex].permissions" :val="item.id"
+                           @update:model-value="() => handleToggle(item.id, role.id)"></q-toggle>
+                     </td>
+                  </tr>
+               </tbody>
+            </TableContainer>
          </q-card-section>
       </q-card>
 
