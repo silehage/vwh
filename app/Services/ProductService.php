@@ -41,21 +41,26 @@ class ProductService
          $product = Product::firstOrCreate(
             ['code' => $data['product_code']],
             [
+               'code' => $data['product_code'],
                'title' => $data['product_name'],
                'category_id' => $category?->id,
                'body' => $data['body'] ?? null,
             ]
          );
 
-         ProductLine::updateOrCreate(
-            ['sku_number' => $data['sku_number']],
-            [
-               'product_id' => $product->id,
-               'title' => $data['product_detail'],
-               'buy_price' => $data['buy_price'],
-               'sell_price' => $data['sell_price'],
-            ]
-         );
+         if(ProductLine::where('sku_number', $data['sku_number'])->count() == 0) {
+
+            ProductLine::create(
+               [
+                  'product_id' => $product->id,
+                  'sku_number' => $data['sku_number'],
+                  'title' => $data['product_detail'],
+                  'buy_price' => $data['buy_price'],
+                  'sell_price' => $data['sell_price'],
+               ]
+            );
+         }
+
       } catch (\Throwable $th) {
          throw $th;
       }
