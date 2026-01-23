@@ -1,1 +1,0 @@
-import{X as s,C as u}from"./app-CHQcK3CV.js";function a(e){if(e=="All")return!0;const n=s(()=>u().props.auth.user),r=s(()=>u().props.auth.permissions);return r.value.includes("can-all")?!0:!n.value||!r.value.length||!e?!1:r.value.includes(e)}export{a as c};

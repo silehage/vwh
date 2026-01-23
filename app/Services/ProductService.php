@@ -35,7 +35,7 @@ class ProductService
       try {
          $category = null;
          if (isset($data['category_name']) && $data['category_name']) {
-            $this->categoryService->store($data['category_name']);
+            $category = $this->categoryService->store($data['category_name']);
          }
 
          $product = Product::firstOrCreate(
@@ -61,8 +61,15 @@ class ProductService
             );
          }
 
+         $this->cacheClear();
+
       } catch (\Throwable $th) {
          throw $th;
       }
+   }
+
+   protected function cacheClear()
+   {
+      Cache::forget('product_options');
    }
 }

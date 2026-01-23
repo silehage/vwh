@@ -42,6 +42,8 @@ const filterFn = (val, update, abort) => {
                   <th align="left">Sku Number</th>
                   <th align="left">Product</th>
                   <th align="left">Total Stock</th>
+                  <th align="left">Buy Price</th>
+                  <th align="left">Sell Price</th>
                </tr>
             </thead>
             <tbody>
@@ -50,6 +52,8 @@ const filterFn = (val, update, abort) => {
                   <td>{{ item.sku_number }}</td>
                   <td>{{ item.title }}</td>
                   <td>{{ item.total_stock }}</td>
+                  <td>{{ item.buy_price }}</td>
+                  <td>{{ item.sell_price }}</td>
                </tr>
             </tbody>
          </TableContainer>

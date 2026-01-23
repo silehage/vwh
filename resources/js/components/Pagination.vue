@@ -22,12 +22,12 @@ defineProps({
       <div>Total {{ total }}</div>
       <div class="flex no-wrap q-gutter-xs">
 
-         <q-btn :disable="current_page < 2" outline size="11px" label="FIRST" @click="router.get(first_page_url)"></q-btn>
-         <q-btn :disable="!prev_page_url" unelevated :color="prev_page_url ? 'primary' : 'grey-6'" padding="2px 8px"
-            size="11px" label="PREV" @click="router.get(prev_page_url)"></q-btn>
-         <q-btn :disable="!next_page_url" unelevated :color="prev_page_url ? 'primary' : 'grey-6'" padding="2px 8px"
-            size="11px" label="NEXT" @click="router.get(next_page_url)"></q-btn>
-         <q-btn :disable="current_page == last_page" outline size="11px" label="LAST"
+         <q-btn padding="3px 6px" :disable="current_page < 2" outline size="11px" icon="first_page" @click="router.get(first_page_url)"></q-btn>
+         <q-btn padding="3px 6px" :disable="!prev_page_url" unelevated :color="prev_page_url ? 'primary' : 'grey-6'"
+            size="11px" icon="chevron_left" @click="router.get(prev_page_url)"></q-btn>
+         <q-btn padding="3px 6px" :disable="!next_page_url" unelevated :color="next_page_url ? 'primary' : 'grey-6'"
+            size="11px" icon="chevron_right" @click="router.get(next_page_url)"></q-btn>
+         <q-btn padding="3px 6px" :disable="current_page == last_page" outline size="11px" icon="last_page"
             @click="router.get(last_page_url)"></q-btn>
       </div>
    </div>
