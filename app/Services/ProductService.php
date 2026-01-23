@@ -14,19 +14,19 @@ class ProductService
    ) {}
    public function index($requst)
    {
-      return ProductLine::when($requst->product_id, function($q) use ($requst) {
+      return ProductLine::when($requst->product_id, function ($q) use ($requst) {
          $q->where('product_id', $requst->product_id);
       })->paginate($requst->per_page ?? 20);
    }
    public function list($requst)
    {
-      return ProductLine::when($requst->product_id, function($q) use ($requst) {
+      return ProductLine::when($requst->product_id, function ($q) use ($requst) {
          $q->where('product_id', $requst->product_id);
       })->limit(500)->get();
    }
    public function productFilters()
    {
-      return Cache::remember('product_options', now()->addMinutes(10), function() {
+      return Cache::remember('product_options', now()->addMinutes(10), function () {
          return DB::table('products')->select('id as value', 'title as label')->get();
       });
    }
@@ -39,18 +39,18 @@ class ProductService
          }
 
          $product = Product::firstOrCreate(
-            ['title' => $data['product_name']],
+            ['code' => $data['product_code']],
             [
+               'title' => $data['product_name'],
                'category_id' => $category?->id,
                'body' => $data['body'] ?? null,
             ]
          );
 
-         $product->lines()->updateOrCreate(
+         ProductLine::updateOrCreate(
+            ['sku_number' => $data['sku_number']],
             [
-               'sku_number' => $data['sku_number'],
-            ],
-            [
+               'product_id' => $product->id,
                'title' => $data['product_detail'],
                'buy_price' => $data['buy_price'],
                'sell_price' => $data['sell_price'],

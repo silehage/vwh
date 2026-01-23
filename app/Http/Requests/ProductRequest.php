@@ -23,6 +23,7 @@ class ProductRequest extends FormRequest
     {
         return [
             'product_name' => ['required'],
+            'product_code' => ['required'],
             'category_name' => ['nullable'],
             'body' => ['nullable'],
             'product_detail' => ['required'],
