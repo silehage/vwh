@@ -14,10 +14,12 @@ return new class extends Migration
     {
         Schema::create('stocks', function (Blueprint $table) {
             $table->id();
+            $table->string('reference');
             $table->string('stock_type');
             $table->text('description');
             $table->string('status')->default(Stock::Pending);
-            $table->string('confirmed_by')->default('System');
+            $table->string('created_by')->default('System');
+            $table->string('confirmed_by')->nullable();
             $table->timestamp('confirmed_at')->nullable();
             $table->timestamps();
         });

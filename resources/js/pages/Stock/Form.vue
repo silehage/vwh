@@ -171,6 +171,4 @@ onMounted(() => {
       </q-card>
    </q-dialog>
 
-   <pre>{{ data }}</pre>
-
 </template>

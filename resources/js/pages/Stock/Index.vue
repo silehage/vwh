@@ -1,13 +1,19 @@
 <script setup>
 import { router, usePage } from '@inertiajs/vue3';
 import stocks from '@/routes/stocks';
+import { badgeColor, dateFormat } from '@/lib/utils';
 
 const data = usePage().props.data
+const options = usePage().props.options
 
 const handleCOnfirm = (item) => {
    router.visit(stocks.confirmed(item.id), {
       preserveState: false
    })
+}
+
+const queryparams = {
+   stock_type: usePage().props.query?.stock_type || 'in'
 }
 
 </script>
@@ -19,10 +25,14 @@ const handleCOnfirm = (item) => {
    </AppHeader>
    <q-card class="section">
       <q-card-section>
+         <div class="q-mb-md q-gutter-sm">
+            <q-btn v-for="(val, i) in options" :label="val.label" :color="queryparams.stock_type == val.value ? 'primary' :'grey-6'" :key="i" @click="router.visit(stocks.index({ query: { stock_type: val.value } }))"></q-btn>
+         </div>
          <TableContainer>
             <thead>
                <tr>
                   <th align="left">#</th>
+                  <th align="left">Ref</th>
                   <th align="left">Date</th>
                   <th align="left">Description</th>
                   <th align="left">Total Stock</th>
@@ -35,11 +45,12 @@ const handleCOnfirm = (item) => {
             <tbody>
                <tr v-for="(item, i) in data.data" :key="i">
                   <td>{{ data.from + i }}</td>
-                  <td>{{ item.created_at }}</td>
+                  <td>{{ item.reference }}</td>
+                  <td>{{dateFormat(item.created_at) }}</td>
                   <td>{{ item.description }}</td>
                   <td>{{ item.items_sum_quantity }}</td>
                   <td>
-                     <q-badge :color="item.status == 'Pending' ? 'grey-7' : 'green'">{{ item.status }}</q-badge>
+                     <q-badge :color="badgeColor(item.status)">{{ item.status }}</q-badge>
                   </td>
                   <td>{{ item.confirmed_at }}</td>
                   <td>{{ item.confirmed_by }}</td>

@@ -1,1 +1,0 @@
-import{d as t,g as n,w as s,A as d,u as o,B as r,o as f}from"./app-DBY7BHew.js";const l=t({__name:"TextLink",props:{href:{},tabindex:{},method:{},as:{}},setup(e){return(a,h)=>(f(),n(o(r),{href:e.href,tabindex:e.tabindex,method:e.method,as:e.as,class:""},{default:s(()=>[d(a.$slots,"default")]),_:3},8,["href","tabindex","method","as"]))}});export{l as _};

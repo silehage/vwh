@@ -18,8 +18,9 @@ class StockController extends Controller
      */
     public function index(Request $request)
     {
-        $data = $this->service->index($request->stock_type ?? 'in');
-        return Inertia::render('Stock/Index', compact('data'));
+        $data = $this->service->index($request);
+        $options = $this->service->getOptions();
+        return Inertia::render('Stock/Index', compact('data', 'options'));
     }
 
     /**
@@ -49,8 +50,8 @@ class StockController extends Controller
     }
     public function confirmed(Request $request, $id)
     {
-        $this->service->confirmed($request, $id);
-        return to_route('stocks.index')->withMessage('Berhasil memperbarui stok');
+        $stock = $this->service->confirmed($request, $id);
+        return to_route('stocks.index',['stock_type' => $stock->stock_type])->withMessage('Berhasil memperbarui stok');
     }
 
     /**
