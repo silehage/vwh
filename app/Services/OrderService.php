@@ -5,7 +5,6 @@ namespace App\Services;
 use App\Models\Order;
 use App\Models\Store;
 use App\Helpers\Helper;
-use App\Models\OrderItem;
 use App\Models\ProductLine;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -40,14 +39,6 @@ class OrderService
          // START
          $order = Order::where('orderId', $data['orderId'])->first();
 
-         $destyItem = $data['itemList'][0];
-
-         $deliveryDeadline =  $destyItem['shippingDetail']['deliveryDeadline'] ?? NULL;
-         $deliveryDeadline =  $deliveryDeadline ? Helper::date_from_utc_to_locale($deliveryDeadline) : NULL;
-         $trackingNumber = $destyItem['shippingDetail']['trackingNumber'] ?? NULL;
-
-         $orderCreateTime = Helper::date_from_utc_to_locale($data['orderCreateTime']);
-
          if ($data['storeId'] && $data['storeName']) {
 
             Store::updateOrCreate([
@@ -58,6 +49,45 @@ class OrderService
                'platform' => $data['platform'],
                'platform_name' => $data['platformName'],
             ]);
+         }
+
+         $destyItem = $data['itemList'][0];
+
+         $deliveryDeadline =  null;
+         $trackingNumber = null;
+         $orderCreateTime = Helper::date_from_utc_to_locale($data['orderCreateTime']);
+
+         $orderItems = [];
+
+         foreach ($data['itemList'] as $item) {
+            $productLine = null;
+            $skuNumber = $item['itemCode'] ?? $item['itemExternalCode'];
+
+            if ($skuNumber) {
+               $productLine = ProductLine::where('sku_number', $skuNumber)->first();
+            }
+
+            if (!$trackingNumber) {
+               $trackingNumber = $item['shippingDetail']['trackingNumber'] ?? NULL;
+            }
+
+            if (!$deliveryDeadline) {
+               $dl = $item['shippingDetail']['deliveryDeadline'] ?? NULL;
+               $deliveryDeadline =  $dl ? Helper::date_from_utc_to_locale($dl) : NULL;
+            }
+
+            $orderItems[] = [
+               'product_line_id' => $productLine ? $productLine->id : null,
+               'itemOrderId' => $item['itemOrderId'],
+               'itemName' => $item['itemName'],
+               'skuNumber' => $skuNumber,
+               'discountAmount' => $item['discountAmount'],
+               'originalPrice' => $item['originalPrice'],
+               'price' => $item['price'],
+               'sellPrice' => $item['sellPrice'],
+               'onHandStock' => $item['onHandStock'] ?? 0,
+               'quantity' => $item['quantity'],
+            ];
          }
 
          if ($order) {
@@ -96,26 +126,6 @@ class OrderService
             }
 
             $order->update($updatePayload);
-
-            // foreach ($data['itemList'] as $item) {
-
-            //    if ($item['itemCode'] || $item['itemExternalCode']) {
-            //       $payloadItem = [
-            //          'platformWarehouseId' => $item['platformWarehouseId'] ?? NULL,
-            //          'platformWarehouseName' => $item['platformWarehouseName'] ?? NULL,
-            //          'imageUrl' => $item['imageUrl'],
-            //          'skuNumber' => $item['itemCode'] ?? $item['itemExternalCode'],
-            //          'orderStatus' => $item['orderStatus'],
-            //          'platformOrderStatus' => $item['platformOrderStatus'],
-            //       ];
-
-            //       OrderItem::where('order_id', $order->id)
-            //          ->where('itemId', $item['itemId'])
-            //          ->where('itemOrderId', $item['itemOrderId'])
-            //          ->update($payloadItem);
-            //    }
-            // }
-
          } else {
 
             $orderPayload = [
@@ -163,35 +173,7 @@ class OrderService
 
             $order = Order::create($orderPayload);
 
-            foreach ($data['itemList'] as $item) {
-               $productLine = null;
-               $skuNumber = $item['itemCode'] ?? $item['itemExternalCode'];
-               if($skuNumber) {
-                  $productLine = ProductLine::where('skuNumber', $skuNumber)->first();
-               }
-               $payloadItem = [
-                  'order_id' => $order->id,
-                  'product_line_id' => $productLine? $productLine->id : null,
-                  'itemId' => $item['itemId'],
-                  'itemOrderId' => $item['itemOrderId'],
-                  'platformWarehouseId' => $item['platformWarehouseId'] ?? NULL,
-                  'platformWarehouseName' => $item['platformWarehouseName'] ?? NULL,
-                  'itemName' => $item['itemName'],
-                  'imageUrl' => $item['imageUrl'],
-                  'skuNumber' => $skuNumber,
-                  'orderStatus' => $item['orderStatus'],
-                  'locationId' => $item['locationId'],
-                  'locationName' => $item['locationName'] ?? null,
-                  'platformOrderStatus' => $item['platformOrderStatus'],
-                  'discountAmount' => $item['discountAmount'],
-                  'originalPrice' => $item['originalPrice'],
-                  'price' => $item['price'],
-                  'sellPrice' => $item['sellPrice'],
-                  'onHandStock' => $item['onHandStock'] ?? 0,
-                  'quantity' => $item['quantity'],
-               ];
-               OrderItem::create($payloadItem);
-            }
+            $order->items()->createMany($orderItems);
          }
          DB::commit();
       } catch (\Throwable $th) {
@@ -202,23 +184,23 @@ class OrderService
 
    public function index($request)
    {
-      return Order::when($request->search, function($q) use ($request) {
+      return Order::when($request->search, function ($q) use ($request) {
          $key = $request->search;
          $q->where('orderSn', $key)
-         ->orWhere('bookingSn', $key)
-         ->orWhere('orderId', $key)
-         ->orWhere('storeName', $key)
-         ->orWhere('customerEmail', $key)
-         ->orWhere('customerName', $key)
-         ->orWhere('customerPhone', $key)
-         ->orWhere('platform', $key)
-         ->orWhere('platformName', $key);
-      })->when($request->status, function($q) use ($request) {
+            ->orWhere('bookingSn', $key)
+            ->orWhere('orderId', $key)
+            ->orWhere('storeName', $key)
+            ->orWhere('customerEmail', $key)
+            ->orWhere('customerName', $key)
+            ->orWhere('customerPhone', $key)
+            ->orWhere('platform', $key)
+            ->orWhere('platformName', $key);
+      })->when($request->status, function ($q) use ($request) {
          $status = $request->status;
          $q->where('orderStatusList', $status)
-         ->orWhere('subOrderStatusList', $status);
+            ->orWhere('subOrderStatusList', $status);
       })
-      ->orderBy('id', 'desc')
-      ->paginate(20);
+         ->orderBy('id', 'desc')
+         ->paginate(20);
    }
 }

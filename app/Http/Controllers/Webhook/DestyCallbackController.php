@@ -10,20 +10,20 @@ use Illuminate\Support\Facades\Cache;
 
 class DestyCallbackController extends Controller
 {
-    /**
-     * Handle the incoming request.
-     */
-    public function __invoke(Request $request)
-    {
-         if ($request->method() != 'POST') {
-         echo 'This route just for POST method & for destyApp webhook callback only';
+   /**
+    * Handle the incoming request.
+    */
+   public function __invoke(Request $request)
+   {
+      if ($request->method() != 'POST') {
+         echo 'This route just for POST method only';
          die();
       }
 
       try {
 
-        //  $accessToken = $request->header('accessToken');
-        //  $token = str_replace("Bearer ", '', $accessToken);
+         $accessToken = $request->header('accessToken');
+         $token = str_replace("Bearer ", '', $accessToken);
 
          $json = $request->getContent();
          $data = json_decode($json, true);
@@ -56,5 +56,5 @@ class DestyCallbackController extends Controller
             'message' => 'Successfully'
          ]);
       }
-    }
+   }
 }
