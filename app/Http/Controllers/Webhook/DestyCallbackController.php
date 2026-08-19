@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use App\Jobs\DestyWebhookJob;
+use App\Jobs\SeribugudangServiceJob;
 use Illuminate\Support\Facades\Cache;
 
 class DestyCallbackController extends Controller
@@ -36,10 +37,12 @@ class DestyCallbackController extends Controller
          if (Cache::has($cacheKey)) {
             $c = (int) Cache::get($cacheKey);
             DestyWebhookJob::dispatch($data)->delay($c);
+            SeribugudangServiceJob::dispatch($data)->delay($c);
             $delay = $c + $timer;
             Cache::put($cacheKey, $delay, now()->addSeconds($delay));
          } else {
             DestyWebhookJob::dispatch($data);
+            SeribugudangServiceJob::dispatch($data);
             Cache::put($cacheKey, $timer, now()->addSeconds($timer));
          }
 
