@@ -5,9 +5,7 @@ namespace App\Http\Controllers\Webhook;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
-use App\Jobs\DestyWebhookJob;
-use App\Jobs\SeribugudangServiceJob;
-use Illuminate\Support\Facades\Cache;
+use App\Jobs\StoreDestyDataJob;
 
 class DestyCallbackController extends Controller
 {
@@ -23,28 +21,30 @@ class DestyCallbackController extends Controller
 
       try {
 
-         $accessToken = $request->header('accessToken');
-         $token = str_replace("Bearer ", '', $accessToken);
+         // $accessToken = $request->header('accessToken');
+         // $token = str_replace("Bearer ", '', $accessToken);
 
          $json = $request->getContent();
          $data = json_decode($json, true);
 
-         $cacheKey = 'CLB_DESTY_' . $data['orderId'];
+         StoreDestyDataJob::dispatch($data);
 
-         $timer = 30;
-         $c = 0;
+         // $cacheKey = 'CLB_DESTY_' . $data['orderId'];
 
-         if (Cache::has($cacheKey)) {
-            $c = (int) Cache::get($cacheKey);
-            DestyWebhookJob::dispatch($data)->delay($c);
-            SeribugudangServiceJob::dispatch($data)->delay($c);
-            $delay = $c + $timer;
-            Cache::put($cacheKey, $delay, now()->addSeconds($delay));
-         } else {
-            DestyWebhookJob::dispatch($data);
-            SeribugudangServiceJob::dispatch($data);
-            Cache::put($cacheKey, $timer, now()->addSeconds($timer));
-         }
+         // $timer = 30;
+         // $c = 0;
+
+         // if (Cache::has($cacheKey)) {
+         //    $c = (int) Cache::get($cacheKey);
+         //    DestyWebhookJob::dispatch($data)->delay($c);
+         //    SeribugudangServiceJob::dispatch($data)->delay($c);
+         //    $delay = $c + $timer;
+         //    Cache::put($cacheKey, $delay, now()->addSeconds($delay));
+         // } else {
+         //    DestyWebhookJob::dispatch($data);
+         //    SeribugudangServiceJob::dispatch($data);
+         //    Cache::put($cacheKey, $timer, now()->addSeconds($timer));
+         // }
 
          // Log::debug('CLB_DESTY ' . $data['orderId'] . ' DELAY ' . $c);
 

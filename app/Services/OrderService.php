@@ -55,7 +55,7 @@ class OrderService
 
          $deliveryDeadline =  null;
          $trackingNumber = null;
-         $orderCreateTime = Helper::date_from_utc_to_locale($data['orderCreateTime']);
+         $orderCreateTime = Helper::dateUtcToLocale($data['orderCreateTime']);
 
          $orderItems = [];
 
@@ -73,7 +73,7 @@ class OrderService
 
             if (!$deliveryDeadline) {
                $dl = $item['shippingDetail']['deliveryDeadline'] ?? NULL;
-               $deliveryDeadline =  $dl ? Helper::date_from_utc_to_locale($dl) : NULL;
+               $deliveryDeadline =  $dl ? Helper::dateUtcToLocale($dl) : NULL;
             }
 
             $orderItems[] = [

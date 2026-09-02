@@ -30,7 +30,6 @@ class SeribugudangService
             $response->throw();
          }
 
-         // Log::debug($response->json());
       } catch (\Throwable $th) {
          Log::error($th);
       }
