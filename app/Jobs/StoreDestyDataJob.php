@@ -4,11 +4,11 @@ namespace App\Jobs;
 
 use App\Helpers\Helper;
 use App\Models\DestyData;
+use App\Services\DestyDataService;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Queue\Middleware\WithoutOverlapping;
 use Illuminate\Support\Facades\Log;
-use Modules\Desty\Services\DestyDataService;
 
 class StoreDestyDataJob implements ShouldQueue
 {

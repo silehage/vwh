@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Desty\Services;
+namespace App\Services;
 
 use App\Models\DestyData;
 
