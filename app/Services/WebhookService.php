@@ -19,7 +19,6 @@ class WebhookService
    public function confirmedStock($stock)
    {
 
-
       try {
          $path = '/api/webhook/transfer-stock';
 
