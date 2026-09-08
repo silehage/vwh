@@ -29,7 +29,15 @@ class DestyCallbackController extends Controller
          $json = $request->getContent();
          $data = json_decode($json, true);
 
+         if(isset($data['storeName'])) {
+            Log::debug($data['storename']);
+         }else {
+            Log::debug('Desty Payload Oanomali');
+            Log::debug($data);
+         }
+
          StoreDestyDataJob::dispatch($data);
+
 
          // $cacheKey = 'CLB_DESTY_' . $data['orderId'];
 
