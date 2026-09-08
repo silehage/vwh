@@ -30,11 +30,12 @@ class DestyCallbackController extends Controller
          $data = json_decode($json, true);
 
          if (isset($data['storeName'])) {
-            Log::debug('Log Webhook Valir Bandung', [
+            Log::debug('Log Webhook Bandung', [
                'IP' => $request->ip(),
                'orderId' => $data['orderId'],
-               'storeName' => $data['storeName'],
                'orderSn' => $data['orderSn'],
+               'storeName' => $data['storeName'],
+               'storeId' => $data['storeId'],
             ]);
          } else {
             Log::debug('Desty Payload Oanomali');
