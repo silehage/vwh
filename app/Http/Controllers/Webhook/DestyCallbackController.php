@@ -30,7 +30,7 @@ class DestyCallbackController extends Controller
          $data = json_decode($json, true);
 
          if(isset($data['storeName'])) {
-            Log::debug($data['storename']);
+            Log::debug($data['storeName']);
          }else {
             Log::debug('Desty Payload Oanomali');
             Log::debug($data);
