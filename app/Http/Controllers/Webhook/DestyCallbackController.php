@@ -24,14 +24,19 @@ class DestyCallbackController extends Controller
          // $accessToken = $request->header('accessToken');
          // $token = str_replace("Bearer ", '', $accessToken);
 
-         Log::debug('IP : ' . $request->ip());
+         // Log::debug('IP : ' . $request->ip());
 
          $json = $request->getContent();
          $data = json_decode($json, true);
 
-         if(isset($data['storeName'])) {
-            Log::debug($data['storeName']);
-         }else {
+         if (isset($data['storeName'])) {
+            Log::debug('Log Webhook Valir Bandung', [
+               'IP' => $request->ip(),
+               'orderId' => $data['orderId'],
+               'storeName' => $data['storeName'],
+               'orderSn' => $data['orderSn'],
+            ]);
+         } else {
             Log::debug('Desty Payload Oanomali');
             Log::debug($data);
          }
