@@ -34,6 +34,7 @@ class StoreDestyDataJob implements ShouldQueue
     public function middleware()
     {
         // Kunci lock dibuat unik berdasarkan ID di dalam payload
+        Log::debug($this->payload);
         $uniqueKey = $this->payload['orderId'];
 
         return [

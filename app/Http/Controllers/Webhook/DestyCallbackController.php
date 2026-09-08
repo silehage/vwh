@@ -24,6 +24,8 @@ class DestyCallbackController extends Controller
          // $accessToken = $request->header('accessToken');
          // $token = str_replace("Bearer ", '', $accessToken);
 
+         Log::debug('IP : ' . $request->ip());
+
          $json = $request->getContent();
          $data = json_decode($json, true);
 
