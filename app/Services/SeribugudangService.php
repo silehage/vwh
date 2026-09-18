@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\DestyData;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
@@ -16,7 +17,16 @@ class SeribugudangService
       }
    }
 
-   public function store($payload)
+   public function storeDestyData(DestyData $model)
+   {
+      try {
+         $this->store($model->payload);
+      } catch (\Throwable $th) {
+         Log::error($th->getMessage());
+      }
+   }
+
+   public function store(array $payload)
    {
       try {
          $path = '/api/desty/orders/webhook';
@@ -31,7 +41,7 @@ class SeribugudangService
          }
 
       } catch (\Throwable $th) {
-         Log::error($th);
+         throw $th;
       }
    }
    protected function buildUrl($path)
