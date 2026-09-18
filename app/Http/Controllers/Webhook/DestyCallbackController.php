@@ -29,40 +29,20 @@ class DestyCallbackController extends Controller
          $json = $request->getContent();
          $data = json_decode($json, true);
 
-         if (isset($data['storeName'])) {
-            Log::debug('Log Webhook Bandung', [
-               'IP' => $request->ip(),
-               'orderId' => $data['orderId'],
-               'orderSn' => $data['orderSn'],
-               'storeName' => $data['storeName'],
-               'storeId' => $data['storeId'],
-            ]);
-         } else {
-            Log::debug('Desty Payload Oanomali');
-            Log::debug($data);
-         }
-
-         StoreDestyDataJob::dispatch($data);
-
-
-         // $cacheKey = 'CLB_DESTY_' . $data['orderId'];
-
-         // $timer = 30;
-         // $c = 0;
-
-         // if (Cache::has($cacheKey)) {
-         //    $c = (int) Cache::get($cacheKey);
-         //    DestyWebhookJob::dispatch($data)->delay($c);
-         //    SeribugudangServiceJob::dispatch($data)->delay($c);
-         //    $delay = $c + $timer;
-         //    Cache::put($cacheKey, $delay, now()->addSeconds($delay));
+         // if (isset($data['storeName'])) {
+         //    Log::debug('Log Webhook Bandung', [
+         //       'IP' => $request->ip(),
+         //       'orderId' => $data['orderId'],
+         //       'orderSn' => $data['orderSn'],
+         //       'storeName' => $data['storeName'],
+         //       // 'storeId' => $data['storeId'],
+         //    ]);
          // } else {
-         //    DestyWebhookJob::dispatch($data);
-         //    SeribugudangServiceJob::dispatch($data);
-         //    Cache::put($cacheKey, $timer, now()->addSeconds($timer));
+         //    Log::debug('Desty Payload Oanomali');
+         //    Log::debug($data);
          // }
 
-         // Log::debug('CLB_DESTY ' . $data['orderId'] . ' DELAY ' . $c);
+         StoreDestyDataJob::dispatch($data);
 
          return response()->json([
             'success' => true,

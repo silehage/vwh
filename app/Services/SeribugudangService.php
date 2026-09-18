@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\DestyData;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
@@ -21,6 +22,7 @@ class SeribugudangService
    {
       try {
          $this->store($model->payload);
+         DB::table('desty_data')->where('id', $model->id)->update(['reserved_at' => now()]);
       } catch (\Throwable $th) {
          Log::error($th->getMessage());
       }
